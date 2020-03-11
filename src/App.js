@@ -61,7 +61,7 @@ const App = props => {
 
       <Switch>
         <Route path="/home" component={Home} />
-        <Route path="/createreactapp" render={CreateReactApp} />
+        <Route path="/createreactapp" render={() => <CreateReactApp />} />
       </Switch>
     </BrowserRouter>
   );
