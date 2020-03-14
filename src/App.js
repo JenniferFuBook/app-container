@@ -2,13 +2,33 @@ import React from 'react';
 import { NavLink, BrowserRouter, Route, Switch } from 'react-router-dom';
 import MicroFrontend from './MicroFrontend';
 
-const { REACT_APP_CREATEREACTAPP_HOST: createreactappHost } = process.env;
+const { 
+  REACT_APP_CREATEREACTAPP_HOST: createreactappHost,
+  REACT_APP_CREATEREACTAPP2_HOST: createreactapp2Host,
+  REACT_APP_CREATEREACTAPP3_HOST: createreactapp3Host
+} = process.env;
 
 const CreateReactApp = ({ history }) => (
   <MicroFrontend
     history={history}
     host={createreactappHost}
     name="createreactapp"
+  />
+);
+
+const CreateReactApp2 = ({ history }) => (
+  <MicroFrontend
+    history={history}
+    host={createreactapp2Host}
+    name="createreactapp2"
+  />
+);
+
+const CreateReactApp3 = ({ history }) => (
+  <MicroFrontend
+    history={history}
+    host={createreactapp3Host}
+    name="createreactapp3"
   />
 );
 
@@ -45,8 +65,9 @@ const App = props => {
         This is an example of micro frontend. 
       </h1>
       <p>
-        In the links below, Home is a component bundled with the App Container,
-        and Micro Frontend is a micro frontend app loaded from an outside route.
+        I am an App Container. <br/>
+        In the links below, Home is a component bundled with the App Container.
+        We have three Micro Frontends: Create React App, Create React App2, and Create React App3.
       </p>
       <ul>
         <li>
@@ -57,11 +78,23 @@ const App = props => {
             Micro Frontend: Create React App
           </NavLink>
         </li>
+        <li>
+          <NavLink to="/createreactapp2">
+            Micro Frontend: Create React App 2
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/createreactapp3">
+            Micro Frontend: Create React App 3
+          </NavLink>
+        </li>
       </ul>
 
       <Switch>
         <Route path="/home" component={Home} />
         <Route path="/createreactapp" render={() => <CreateReactApp />} />
+        <Route path="/createreactapp2" render={() => <CreateReactApp2 />} />
+        <Route path="/createreactapp3" render={() => <CreateReactApp3 />} />
       </Switch>
     </BrowserRouter>
   );
