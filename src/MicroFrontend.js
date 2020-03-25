@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 class MicroFrontend extends React.Component {
   constructor() {
@@ -17,12 +17,12 @@ class MicroFrontend extends React.Component {
     fetch(`${host}/asset-manifest.json`)
       .then(res => res.json())
       .then(manifest => {
-        Object.keys(manifest["files"])
-          .filter(key => key.endsWith(".js"))
+        Object.keys(manifest['files'])
+          .filter(key => key.endsWith('.js'))
           .forEach((key, _, arr) => {
             this.chunkCount = arr.length;
-            const path = `${host}${manifest["files"][key]}`;
-            const script = document.createElement("script");
+            const path = `${host}${manifest['files'][key]}`;
+            const script = document.createElement('script');
             if (key === 'main.js') {
               script.id = scriptId;
             }
@@ -32,7 +32,7 @@ class MicroFrontend extends React.Component {
                 this.renderMicroFrontend();
               }
             }
-            script.crossOrigin = "";
+            script.crossOrigin = '';
             script.src = path;
             document.head.appendChild(script);
           });
