@@ -31,7 +31,6 @@ class MicroFrontend extends React.Component {
                 this.renderMicroFrontend();
               }
             }
-            script.crossOrigin = '';
             script.src = path;
             document.head.appendChild(script);
           });
