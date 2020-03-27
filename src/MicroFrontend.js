@@ -1,10 +1,6 @@
 import React from 'react';
 
 class MicroFrontend extends React.Component {
-  constructor() {
-    super();
-    this.chunkCount = 0;
-  }
   componentDidMount() {
     const { name, host, document } = this.props;
     const scriptId = `micro-frontend-script-${name}`;
@@ -17,18 +13,21 @@ class MicroFrontend extends React.Component {
     fetch(`${host}/asset-manifest.json`)
       .then(res => res.json())
       .then(manifest => {
+        let chunkCount = -1;
         Object.keys(manifest['files'])
           .filter(key => key.endsWith('.js'))
           .forEach((key, _, arr) => {
-            this.chunkCount = arr.length;
+            if (chunkCount < 0) {
+              chunkCount = arr.length;
+            }
             const path = `${host}${manifest['files'][key]}`;
             const script = document.createElement('script');
             if (key === 'main.js') {
               script.id = scriptId;
             }
             script.onload = () => {
-              this.chunkCount--;
-              if (this.chunkCount === 0) {
+              chunkCount--;
+              if (chunkCount === 0) {
                 this.renderMicroFrontend();
               }
             }
