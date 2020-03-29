@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-class MicroFrontend extends React.Component {
-  componentDidMount() {
-    const { name, host, document } = this.props;
+const MicroFrontend = ({ name, host, history }) => {
+  useEffect(() => {
     const scriptId = `micro-frontend-script-${name}`;
+    const renderMicroFrontend = () => {
+      window[`render${name}`] && window[`render${name}`](`${name}-container`, history);
+    };
 
     if (document.getElementById(scriptId)) {
-      this.renderMicroFrontend();
+      renderMicroFrontend();
       return;
     }
 
@@ -28,36 +30,20 @@ class MicroFrontend extends React.Component {
             script.onload = () => {
               chunkCount--;
               if (chunkCount === 0) {
-                this.renderMicroFrontend();
+                renderMicroFrontend();
               }
             }
             script.src = path;
             document.head.appendChild(script);
           });
       });
-  }
 
-  componentWillUnmount() {
-    const { name, window } = this.props;
+    return () => {
+      window[`unmount${name}`] && window[`unmount${name}`](`${name}-container`);
+    };
+  }, [name, host, history]);
 
-    window[`unmount${name}`] && window[`unmount${name}`](`${name}-container`);
-  }
-
-  renderMicroFrontend = () => {
-    const { name, window, history } = this.props;
-
-    window[`render${name}`] &&
-      window[`render${name}`](`${name}-container`, history);
-  };
-
-  render() {
-    return <main id={`${this.props.name}-container`} />;
-  }
+  return <main id={`${name}-container`} />;
 }
-
-MicroFrontend.defaultProps = {
-  document,
-  window
-};
 
 export default MicroFrontend;
